@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Auto Save 30</title>
+</head>
+<style>
+    /* Google font */
+    @import url('https://fonts.googleapis.com/css?family=Orbitron');
+
+    .container {
+        display: grid;
+        position: fixed;
+        padding: 0;
+        margin: 0;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #text-box {
+        background-color: rgb(88, 177, 30);
+        display: grid;
+        padding: 20px 20px 20px 20px;
+        text-align: center;
+
+    }
+
+    #clock {
+        background-color: #383433;
+        font-family: 'Orbitron', sans-serif;
+        color: #f0e3cb;
+        font-size: 56px;
+        text-align: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+
+
+    #text-box>* {
+        margin: 30px 30px 30px 30px;
+    }
+
+
+    #logs {
+        background-color: rgb(250, 179, 112);
+
+    }
+
+    #btn-div {
+        margin: 40px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div id="text-box">
+            <h1>Text Box:</h1>
+            <textarea id="text-area" rows="4" cols="50" placeholder="Enter your text here..."></textarea><br>
+            <!-- <div id="btn-div"></div><br> -->
+            <div id="clock">
+            </div>
+
+        </div>
+        <div id="logs">
+            <h1>Text Logs:</h1>
+            <div id="logger">
+            </div>
+
+            <script>
+                const logList = document.querySelector("#logger");
+                const ulHandle = document.createElement("ul");
+                logList.appendChild(ulHandle);
+                let textArea = document.querySelector("textarea");
+
+                const texts = [];
+
+                let localTexts = [];
+
+                //30 seconds checker function
+                setInterval(function () {
+                    if (textArea.value.length > 0 || typeof textArea.value !== typeof "hi") {
+                        const obj = {
+                            id: Number(new Date()),
+                            text: textArea.value
+                        }
+                        //pushing text area values to texts array
+                        texts.push(obj)
+                        localStorage.setItem('texts', JSON.stringify(texts));
+                        localTexts = JSON.parse(localStorage.getItem('texts'));
+                        textLogs(localTexts);
+                        textArea.value = '';
+                        // console.log(texts);
+                    } else if (textArea.value.length === 0) {
+                        console.log('No text entered');
+                    }
+                }, 30000);
+
+                //last element picker from localstorage
+                const textLogs = (localTexts) => {
+                    const lastElem = localTexts[localTexts.length - 1];
+                    const liTag = document.createElement("h2");
+                    msToTime(lastElem, liTag);
+                }
+
+                //Li generator and appender to text logs with timestamp
+                const msToTime = (lastElem, liTag) => {
+                    let time = '';
+                    let date = new Date();
+                    let hours = date.getHours();
+                    let minutes = date.getMinutes();
+                    let seconds = date.getSeconds();
+                    let milliseconds = date.getMilliseconds();
+                    time = String(hours + ":" + minutes + ":" + seconds + "." + milliseconds);
+
+
+                    const btn = document.createElement("button");
+                    const text = document.createTextNode(time);
+                    btn.appendChild(text);
+
+
+                    liTag.textContent = lastElem.text;
+                    liTag.appendChild(btn)
+
+                    ulHandle.appendChild(liTag);
+                    rePopulate(lastElem, btn);
+
+                }
+
+                //Li re-populator to text box
+                const rePopulate = (lastElem, btn) => {
+                    btn.addEventListener('click', () => {
+                        document.getElementById("text-area").value = lastElem.text;
+                    })
+
+                }
+
+                //clock code
+                const currentTime = () => {
+                    var date = new Date(); /* creating object of Date class */
+                    var hour = date.getHours();
+                    var min = date.getMinutes();
+                    var sec = date.getSeconds();
+                    hour = updateTime(hour);
+                    min = updateTime(min);
+                    sec = updateTime(sec);
+                    document.getElementById("clock").innerText = hour + " : " + min + " : " + sec; /* adding time to the div */
+                    var t = setTimeout(function () { currentTime() }, 1000); /* setting timer */
+
+                }
+
+                const updateTime = (k) => {
+                    if (k < 10) {
+                        return "0" + k;
+                    }
+                    else {
+                        return k;
+                    }
+                }
+
+                currentTime(); /* calling currentTime() function to start the clock */
+
+            </script>
+</body>
+
+</html>

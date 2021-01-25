@@ -1,0 +1,12 @@
+link referred to know how to change text area value:
+https://www.geeksforgeeks.org/how-to-change-the-content-of-a-textarea-using-javascript/
+
+link referred to get time stamp:
+https://www.w3schools.com/jsref/jsref_gettime.asp
+https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_gettime
+
+digital clock code(not exact resource something similar):
+https://codepen.io/afarrar/pen/JRaEjP
+
+
+
