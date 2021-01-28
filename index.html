@@ -138,8 +138,9 @@
             let localTexts = [];
 
             //30 seconds checker function
+
             setInterval(function () {
-                if (textArea.value.length > 0 || typeof textArea.value !== typeof "hi") {
+                if (textArea.value.length > 0) {
                     const obj = {
                         id: Number(new Date()),
                         text: textArea.value
